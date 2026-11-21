@@ -43,6 +43,9 @@ builder.Services
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ActividadService>();
+builder.Services.AddScoped<UsuariosService>();
+builder.Services.AddScoped<JerarquiaService>();
 
 builder.Services.AddAuthorization();
 
