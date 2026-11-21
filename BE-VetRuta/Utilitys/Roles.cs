@@ -6,5 +6,7 @@
         public const string Director = "DIRECTOR";
         public const string Medico = "MEDICO";
         public const string Tecnico = "TECNICO";
+
+        public const string Negocio = $"{Director},{Medico},{Tecnico}";
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using VetRuta.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ActividadService>();
 builder.Services.AddScoped<UsuariosService>();
 builder.Services.AddScoped<JerarquiaService>();
+builder.Services.AddScoped<CatalogosService>();
 
 builder.Services.AddAuthorization();
 
