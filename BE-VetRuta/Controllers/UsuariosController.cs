@@ -15,7 +15,13 @@ namespace BE_VetRuta.Controllers
         [Authorize(Roles = $"{Roles.Root},{Roles.Director}")]
         [HttpGet]
         public async Task<ActionResult<List<UsuarioDto>>> Listar([FromQuery] string? rol) =>
-            Ok(await usuariosService.ListarAsync(rol));
+        Ok(await usuariosService.ListarAsync(rol));
+
+        /// <summary>Técnicos a cargo del médico autenticado.</summary>
+        [Authorize(Roles = Roles.Medico)]
+        [HttpGet("mis-tecnicos")]
+        public async Task<ActionResult<List<TecnicoDto>>> MisTecnicos() =>
+            Ok(await usuariosService.ListarMisTecnicosAsync(User.GetUsuarioId()));
 
         [Authorize(Roles = Roles.Root)]
         [HttpPost]
@@ -25,7 +31,7 @@ namespace BE_VetRuta.Controllers
             return Created($"/api/usuarios/{usuario.Id}", usuario);
         }
 
-        /// <summary>Activa o desactiva un usuario.</summary>
+
         [Authorize(Roles = Roles.Root)]
         [HttpPatch("{id:int}/estado")]
         public async Task<IActionResult> CambiarEstado(int id, CambiarEstadoRequest request)

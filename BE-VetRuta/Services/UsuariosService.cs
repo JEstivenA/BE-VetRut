@@ -8,7 +8,7 @@ namespace BE_VetRuta.Services
 {
     public class UsuariosService(VetRutaDbContext db, ActividadService actividad)
     {
-        // Root crea usuarios de cualquier rol del negocio (no otros root)
+
         private static readonly string[] RolesCreables = [Roles.Director, Roles.Medico, Roles.Tecnico];
 
         public async Task<List<UsuarioDto>> ListarAsync(string? rol)
@@ -36,7 +36,6 @@ namespace BE_VetRuta.Services
                 throw ApiException.BadRequest("El rol debe ser DIRECTOR, MEDICO o TECNICO.");
 
             var email = request.Email.Trim().ToLower();
-
             if (await db.Usuario.AnyAsync(u => u.Email == email))
                 throw ApiException.Conflicto("Ya existe un usuario con ese correo.");
 
@@ -63,7 +62,6 @@ namespace BE_VetRuta.Services
                 Activo = true,
                 FechaCreacion = DateTime.Now
             };
-
             db.Usuario.Add(usuario);
             actividad.Registrar(rootId, "USUARIO_CREADO", $"Creó el usuario {usuario.Nombre} con rol {rolNombre}.");
             await db.SaveChangesAsync();
@@ -97,6 +95,15 @@ namespace BE_VetRuta.Services
                 $"{(activo ? "Activó" : "Desactivó")} al usuario {usuario.Nombre}.");
             await db.SaveChangesAsync();
         }
+
+        /// <summary>Técnicos activos que hoy están a cargo del médico (para asignar pacientes).</summary>
+        public Task<List<TecnicoDto>> ListarMisTecnicosAsync(int medicoId) =>
+            (from a in db.AsignacionTecnicoMedico
+             join u in db.Usuario on a.TecnicoId equals u.Id
+             where a.MedicoId == medicoId && a.FechaFin == null && u.Activo
+             orderby u.Nombre
+             select new TecnicoDto(u.Id, u.Nombre, u.Zona != null ? u.Zona.Nombre : null, u.Activo))
+            .ToListAsync();
     }
 
 }

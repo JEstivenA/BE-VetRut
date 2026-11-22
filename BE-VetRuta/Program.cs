@@ -48,6 +48,9 @@ builder.Services.AddScoped<ActividadService>();
 builder.Services.AddScoped<UsuariosService>();
 builder.Services.AddScoped<JerarquiaService>();
 builder.Services.AddScoped<CatalogosService>();
+builder.Services.AddScoped<ArchivosService>();
+builder.Services.AddScoped<PacientesService>();
+builder.Services.AddScoped<AlcanceService>();
 
 builder.Services.AddAuthorization();
 
