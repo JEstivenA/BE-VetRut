@@ -26,7 +26,7 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.MapInboundClaims = false; // conserva los nombres cortos: sub, name, role
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -51,6 +51,7 @@ builder.Services.AddScoped<CatalogosService>();
 builder.Services.AddScoped<ArchivosService>();
 builder.Services.AddScoped<PacientesService>();
 builder.Services.AddScoped<AlcanceService>();
+builder.Services.AddScoped<VisitasService>();
 
 builder.Services.AddAuthorization();
 
